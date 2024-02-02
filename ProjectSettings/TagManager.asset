@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - ManTrigger
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - L- bounds
+  - R - bounds
+  - L-tentacle
+  - R-tentacle
+  - terrain
+  - head
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: fx
+    uniqueID: 975192767
+    locked: 0
+  - name: terrain
+    uniqueID: 3580478349
+    locked: 0
+  - name: junk
+    uniqueID: 4007517071
+    locked: 0
+  - name: top
+    uniqueID: 2492095441
+    locked: 0
