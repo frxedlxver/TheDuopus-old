@@ -24,13 +24,12 @@ public class PlatformPath : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    public PlatformPath platformPath;
-
+    [Header("visualization")]
     public bool DrawPoints;
     public bool DrawLines;
     public bool DrawPointNumbers;
 
-    GUIStyle style = new GUIStyle();
+    private GUIStyle style = new();
 
 
 
@@ -52,11 +51,11 @@ public class PlatformPath : MonoBehaviour
     private void OnDrawGizmos()
     {
 
-        for (int i = 0; i < platformPath.pathPoints.Count; i++)
+        for (int i = 0; i < pathPoints.Count; i++)
         {
 
 
-            Transform curPoint = platformPath.pathPoints[i];
+            Transform curPoint = pathPoints[i];
 
             if (DrawPoints)
             {
@@ -68,7 +67,7 @@ public class PlatformPath : MonoBehaviour
             if (DrawLines)
             {
 
-                Transform nextPoint = i < platformPath.pathPoints.Count - 1 ? platformPath.pathPoints[i + 1] : platformPath.pathPoints[0];
+                Transform nextPoint = i < pathPoints.Count - 1 ? pathPoints[i + 1] : pathPoints[0];
 
                 Handles.color = Color.white;
                 Handles.DrawLine(curPoint.position, nextPoint.position);
