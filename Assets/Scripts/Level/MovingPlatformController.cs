@@ -61,7 +61,7 @@ public class MovingPlatformController : MonoBehaviour
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
         // Rotate the platform
-        Platform.transform.rotation = Quaternion.RotateTowards(Platform.transform.rotation, targetRotation, RotationSpeed * Time.fixedDeltaTime);
+        platformRigidbody.MoveRotation(Quaternion.RotateTowards(Platform.transform.rotation, targetRotation, RotationSpeed * Time.fixedDeltaTime));
 
         // Check if the platform is facing the next point
         if (Quaternion.Angle(Platform.transform.rotation, targetRotation) < 1f) // Threshold for rotation completion
