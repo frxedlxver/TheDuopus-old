@@ -5,11 +5,12 @@ public class Sucker : MonoBehaviour
 
     private SpriteRenderer suctionSprite;
     public Color suctionPointColor;
+    public FixedJoint2D fixedSuctionJoint;
 
     public Sucker OtherSucker;
     public Vector2 SuckPosition = Vector2.zero;
     public GameObject suctionPoint;
-    public bool JustStartedSucking { get { return framesSinceStartedSucking < 3;  } }
+    public bool JustStartedSucking { get { return framesSinceStartedSucking < 3; } }
     private int framesSinceStartedSucking = 0;
 
     public bool Sucking { get; private set; }
@@ -37,13 +38,14 @@ public class Sucker : MonoBehaviour
         get { return TouchingSuckable; }
     }
 
-    public void FixedUpdate() {
-        if (framesSinceStartedSucking < 3 )
+    public void FixedUpdate()
+    {
+        if (framesSinceStartedSucking < 3)
         {
             framesSinceStartedSucking++;
         }
     }
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("terrain"))
@@ -54,7 +56,7 @@ public class Sucker : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        
+
         if (TouchingSuckable && collision.gameObject == TouchedSuckable)
         {
             TouchedSuckable = null;
@@ -65,9 +67,8 @@ public class Sucker : MonoBehaviour
     {
         if (TouchingSuckable)
         {
-            suctionPoint.transform.parent = TouchedSuckable.transform;
-            suctionPoint.transform.position = this.transform.position;
             suctionPoint.SetActive(true);
+            fixedSuctionJoint.connectedBody = TouchedSuckable.GetComponent<Rigidbody2D>();
             framesSinceStartedSucking = 0;
             Sucking = true;
         }
@@ -78,9 +79,8 @@ public class Sucker : MonoBehaviour
     {
         if (Sucking)
         {
-            suctionPoint.transform.parent = this.transform;
+            fixedSuctionJoint.connectedBody = null;
             suctionPoint.SetActive(false);
-            suctionPoint.transform.position = this.transform.position;
             Sucking = false;
         }
 

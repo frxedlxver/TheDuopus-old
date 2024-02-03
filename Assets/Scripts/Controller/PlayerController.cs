@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
         if (sucker.Sucking)
         {
-            if (!sucker.TouchingSuckable || sucker.OtherSucker.JustStartedSucking || !suctionHeld)
+            if (sucker.OtherSucker.JustStartedSucking || !suctionHeld)
             {
                 sucker.StopSucking();
             }
