@@ -11,6 +11,7 @@ public class PlatformPath : MonoBehaviour
     public void UpdatePathPoints()
     {
         pathPoints = GetComponentsInChildren<Transform>().ToList();
+        
         pathPoints.Remove(this.transform);
     }
 

@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+
+#if UNITY_EDITOR
+
+[ExecuteAlways]
+#endif
 
 public class MovingPlatformController : MonoBehaviour
 {
@@ -24,25 +30,30 @@ public class MovingPlatformController : MonoBehaviour
         platformRigidbody = Platform.GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
     }
 
+    #if UNITY_EDITOR
+    [ExecuteAlways]
+    private void Update()
+    {
+        if (!Application.isPlaying)
+        {
+            // Ensure moving platform and path are set
+            if (Platform != null && Path != null && Path.pathPoints != null && Path.pathPoints.Count > 0)
+            {
+                Vector3 platformPosition = Platform.transform.position;
+                Vector3 firstPointPosition = Path.pathPoints[0].transform.position;
+                if (platformPosition != firstPointPosition)
+                {
+                    Platform.transform.position = firstPointPosition;
+                }
+            }
+        }
+    }
+    #endif
+
+
     // FixedUpdate is called every fixed framerate frame
     void FixedUpdate()
     {
-        #if UNITY_EDITOR
-                if (!Application.isPlaying)
-                {
-                    // Ensure moving platform and path are set
-                    if (Platform != null && Path != null && Path.pathPoints != null && Path.pathPoints.Count > 0)
-                    {
-                        Vector3 platformPosition = Platform.transform.position;
-                        Vector3 firstPointPosition = Path.pathPoints[0].transform.position;
-                        if (platformPosition != firstPointPosition)
-                        {
-                            Platform.transform.position = firstPointPosition;
-                        }
-                    }
-                }
-        #endif
-
         // Check if the platform needs to rotate
         if (isRotating)
         {
