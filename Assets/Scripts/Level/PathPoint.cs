@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [ExecuteAlways]
 public class PathPoint : MonoBehaviour
 {
-    public PlatformPathEditorOnly parent;
+    public PlatformPath parent;
 
     [ExecuteAlways]
     private void OnEnable()
     {
-        parent = GetComponentInParent<PlatformPathEditorOnly>();
+        parent = GetComponentInParent<PlatformPath>();
         parent.UpdatePathPoints();
     }
 
@@ -26,3 +27,5 @@ public class PathPoint : MonoBehaviour
         parent.UpdatePathPoints();
     }
 }
+
+#endif

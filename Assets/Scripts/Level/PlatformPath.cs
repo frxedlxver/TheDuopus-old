@@ -1,14 +1,29 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor;
 using UnityEngine;
 
-[ExecuteAlways]
-public class PlatformPathEditorOnly : MonoBehaviour
+public class PlatformPath : MonoBehaviour
 {
+    public List<Transform> pathPoints;
+
+    public void UpdatePathPoints()
+    {
+        pathPoints = GetComponentsInChildren<Transform>().ToList();
+        pathPoints.Remove(this.transform);
+    }
+
+    internal Transform GetNextPoint(Transform curPoint)
+    {
+        if (curPoint == null) return pathPoints[0];
+
+        int curPointIdx = pathPoints.IndexOf(curPoint);
+        return curPointIdx == pathPoints.Count - 1 ? pathPoints[0] : pathPoints[curPointIdx + 1];
+    }
+
+#if UNITY_EDITOR
+
     public PlatformPath platformPath;
 
     public bool DrawPoints;
@@ -26,6 +41,11 @@ public class PlatformPathEditorOnly : MonoBehaviour
         style.normal.textColor = Color.black;
         style.fontStyle = FontStyle.Bold;
         style.fontSize = 18;
+    }
+
+    private void Update()
+    {
+        UpdatePathPoints();
     }
 
     [ExecuteAlways]
@@ -47,7 +67,7 @@ public class PlatformPathEditorOnly : MonoBehaviour
 
             if (DrawLines)
             {
-                    
+
                 Transform nextPoint = i < platformPath.pathPoints.Count - 1 ? platformPath.pathPoints[i + 1] : platformPath.pathPoints[0];
 
                 Handles.color = Color.white;
@@ -66,9 +86,6 @@ public class PlatformPathEditorOnly : MonoBehaviour
         }
     }
 
-    [ExecuteAlways]
-    public void UpdatePathPoints()
-    {
-        platformPath.UpdatePathPoints();
-    }
+    #endif
+
 }
