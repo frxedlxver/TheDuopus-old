@@ -31,6 +31,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DistortTex:
+        m_Texture: {fileID: 2800000, guid: d10d05bfe586642779c43fb8a75634ef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DistortionTexture:
         m_Texture: {fileID: 2800000, guid: c9d2ad0b264a64c7193f3d2a62c33d24, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -40,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8659865caadfd4696a2fdc6a0634bb0c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 885bee23ba4984bd0bfd93c5ffad6b32, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -59,6 +63,7 @@ Material:
     - _BlendOp: 0
     - _Cull: 1
     - _Cutoff: 0.5
+    - _DistortThickness: 0.194
     - _DistortionPower: 0.569
     - _DistortionScaleX: 1
     - _DistortionScaleY: 1
@@ -67,7 +72,11 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnableExternalAlpha: 0
+    - _GlowIntensity: 0.5
+    - _GlowThickness: 0.2
+    - _Intensity: 1
     - _QueueOffset: 0
+    - _Ramp: 0.71
     - _RefractionX: 0
     - _RefractionY: 0
     - _SampleGI: 0
@@ -78,6 +87,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.39607835, g: 0.66089284, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Colour: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 0.15686275}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
