@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -63,7 +63,7 @@ Material:
     - _BlendOp: 0
     - _Cull: 1
     - _Cutoff: 0.5
-    - _DistortThickness: 0.194
+    - _DistortThickness: 0.2
     - _DistortionPower: 0.569
     - _DistortionScaleX: 1
     - _DistortionScaleY: 1
@@ -72,11 +72,11 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnableExternalAlpha: 0
-    - _GlowIntensity: 0.5
-    - _GlowThickness: 0.2
-    - _Intensity: 1
+    - _GlowIntensity: 0.02
+    - _GlowThickness: 0.1
+    - _Intensity: 0.3
     - _QueueOffset: 0
-    - _Ramp: 0.71
+    - _Ramp: 0.5
     - _RefractionX: 0
     - _RefractionY: 0
     - _SampleGI: 0
@@ -87,7 +87,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.39607835, g: 0.66089284, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Colour: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 0.15686275}
+    - _Colour: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 0.33333334}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
