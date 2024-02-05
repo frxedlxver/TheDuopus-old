@@ -5,18 +5,14 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _input;
 
     [Header("Force Settings")]
-
     public float headForce = 2500f;
     public float tentacleForce = 50f;
     public float range = 10f;
 
-    [Header("Stamina settings")]
+    [Header("Sucker settings")]
+    public LayerMask SuckableLayers;
     public float maxSuckerStamina = 5f;
     public float staminaRegenSpeed = 1f;
-
-    [Header("Gravity Settings")]
-    public float tentacleGravity = 12f;
-    public float headGravity = 8f;
 
     [Header("Body Parts")]
     public Rigidbody2D headRB;
@@ -43,7 +39,6 @@ public class PlayerController : MonoBehaviour
 
         if ((R_sucker.Sucking) || (L_sucker.Sucking))
         {
-            headRB.gravityScale = 0;
 
             // Determine the target position based on the opposite of the stick input
             Vector2 targetOffset;
@@ -67,10 +62,6 @@ public class PlayerController : MonoBehaviour
 
             headRB.AddForce(force);
         }
-        else
-        {
-            headRB.gravityScale = headGravity;
-        }
     }
 
     public void HandleSucker(bool suctionHeld, bool suctionPressed, Vector2 moveInput, Sucker sucker,  Transform shoulder)
@@ -90,7 +81,7 @@ public class PlayerController : MonoBehaviour
             {
                 sucker.Suck();
             }
-            MoveSucker(moveInput, shoulder, sucker);
+            MoveSuckerAddForce(moveInput, shoulder, sucker);
         }
     }
 
@@ -98,13 +89,9 @@ public class PlayerController : MonoBehaviour
     public void MoveSucker(Vector2 input, Transform shoulder, Sucker sucker)
     {
         Rigidbody2D suckerRB = sucker.GetComponent<Rigidbody2D>();
-        if (input == Vector2.zero)
+
+        if (input !=  Vector2.zero)
         {
-            suckerRB.gravityScale = tentacleGravity;
-        }
-        else
-        {
-            suckerRB.gravityScale = 0;
             Vector2 targetOffset = input * range;
             Vector2 targetPosition = (Vector2)shoulder.position + targetOffset;
             Vector2 newPosition = Vector2.MoveTowards(suckerRB.position, targetPosition, tentacleForce * Time.fixedDeltaTime);
@@ -112,4 +99,25 @@ public class PlayerController : MonoBehaviour
             suckerRB.MovePosition(newPosition);
         }
     }
+
+    public void MoveSuckerAddForce(Vector2 input, Transform shoulder, Sucker sucker)
+    {
+        Rigidbody2D suckerRB = sucker.GetComponent<Rigidbody2D>();
+
+        if (input != Vector2.zero)
+        {
+            Vector2 targetOffset = input * range;
+            Vector2 targetPosition = (Vector2)shoulder.position + targetOffset;
+
+            // Calculate direction from current position to the target position
+            Vector2 direction = (targetPosition - suckerRB.position).normalized;
+
+            // Calculate force vector, could adjust the magnitude as necessary
+            Vector2 force = direction * tentacleForce;
+
+            // Apply force towards the target position
+            suckerRB.AddForce(force);
+        }
+    }
+
 }

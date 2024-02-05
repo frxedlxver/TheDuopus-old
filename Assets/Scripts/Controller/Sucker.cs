@@ -68,7 +68,8 @@ public class Sucker : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("terrain"))
+        var colliderLayer = collision.gameObject.layer;
+        if (colliderLayer == LayerMask.NameToLayer("terrain") || colliderLayer == LayerMask.NameToLayer("kelp"))
         {
             TouchedSuckable = collision.gameObject;
         }
