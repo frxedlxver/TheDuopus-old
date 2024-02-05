@@ -2,90 +2,83 @@ Shader "Unlit/WaterShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        _BaseColor ("Base Color", Color) = (1, 1, 1, 0.7)
+        _MainTex ("Main Texture", 2D) = "white" {}
+        _DistortTex ("Distort", 2D) = "white" {}
+        _Colour ("Colour", Color) = (1, 1, 1, 0.2)
+        _Intensity ("Intensity", Float) = 1
+        _Ramp ("Ramp", Float) = 1
+        
+        _GlowThickness ("Glow Thickness", Float) = 1
+        _GlowIntensity ("Glow Intensity", Float) = 1
+        
+        _DistortThickness ("Thickness", Range(0.01,0.99)) = 0.5
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
+        Tags { 
+            "PreviewType" = "Plane"
+            "RenderType"="Transparent"
+            "Queue"="Overlay"
+        }
         LOD 100
-        Blend SrcAlpha OneMinusSrcAlpha
-        ZWrite Off
-
-        HLSLINCLUDE
-        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-
-        CBUFFER_START(UnityPerMaterial)
-            float4 _BaseColor;
-        CBUFFER_END
-
-        TEXTURE2D(_MainTex);
-        SAMPLER(sampler_MainTex);
-
-        float _WaterTime;
-        float _RippleAmount;
-
-        struct VertexInput
-        {
-            float4 position : POSITION;
-            float2 uv : TEXCOORD0;
-        };
-
-        struct VertexOutput
-        {
-            float4 position : POSITION;
-            float2 uv : TEXCOORD0;
-            float rippleOffset : TEXCOORD1; 
-        };
-        
-        ENDHLSL
+        //Blend SrcAlpha OneMinusSrcAlpha
+        Blend SrcAlpha One
+        Zwrite On
         
         Pass
         {
-            HLSLPROGRAM
-            
+            CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
-            VertexOutput vert(VertexInput input)
+            #include "UnityCG.cginc"
+
+            struct appdata
             {
-                VertexOutput output;
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+            };
 
-                // Add time-based ripple effect to the UV coordinates
-                float rippleStrength = 12;
-                float rippleSpeed = 0.5;
-                float frequencyScaleX = 1.0;
-                float frequencyScaleY = 1.0;
+            struct v2f
+            {
+                float2 uv : TEXCOORD0;
+                float4 vertex : SV_POSITION;
+            };
 
-                float timeFactor = _WaterTime * rippleSpeed;
-                
-                // Add ripple effect to both x and y axes
-                output.uv = 0;
-                output.uv.x += cos(input.uv.x * frequencyScaleX + timeFactor) * rippleStrength;
-                output.uv.y += cos(input.uv.y * frequencyScaleY + timeFactor) * rippleStrength;
+            sampler2D _MainTex, _DistortTex;
+            float4 _MainTex_ST;
 
-                output.position = TransformObjectToHClip(input.position.xyz);
-                output.rippleOffset = output.uv.x;
-                
-                return output;
+            float4 _Colour;
+            float _Intensity, _Ramp, _DistortThickness, _GlowIntensity, _GlowThickness;
+            
+
+            v2f vert (appdata v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+
+                return o;
             }
 
-            half4 frag(VertexOutput output) : COLOR
+            fixed4 frag (v2f i) : SV_Target
             {
-                float wave = sin(output.rippleOffset * 1.5) * _RippleAmount;
-                float4 baseTex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, output.uv * 4 * wave);
+                float3 mainTex = tex2D(_MainTex, i.uv);
+                float luminance = Luminance(mainTex);
+                float3 mainColour = luminance * _Colour;
+                mainColour = pow(mainColour, _Ramp) * _Intensity;
 
-                // Apply smoothstep to alpha channel
-                baseTex.a = smoothstep(0.45, 0.55, baseTex.a);
+                float3 distortTex = tex2D(_DistortTex, i.uv);
+                float distortMask = abs(sin(distortTex.r * 30 + _Time.y));
+                float distortStep = step(distortMask, _DistortThickness);
 
-                // Color variance based on wave value
-                float colorVariance = 0.05; 
-                float3 color = baseTex.r + wave * colorVariance;
-
-                return float4(color, baseTex.b) * _BaseColor;
+                float glow =  smoothstep(distortMask - _GlowThickness, distortMask + _GlowThickness, _DistortThickness);
+                glow *= _GlowIntensity;
+                return fixed4(mainColour + glow, distortStep);
+                return fixed4(mainColour, distortStep);
             }
                 
-            ENDHLSL
+            ENDCG
         }
     }
 }
