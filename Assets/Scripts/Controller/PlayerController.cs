@@ -2,28 +2,38 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerInput _input;
+    private PlayerInput _input;
 
+    [Header("Force Settings")]
+
+    public float headForce = 2500f;
+    public float tentacleForce = 50f;
+    public float range = 10f;
+
+    [Header("Stamina settings")]
+    public float maxSuckerStamina = 5f;
+    public float staminaRegenSpeed = 1f;
+
+    [Header("Gravity Settings")]
+    public float tentacleGravity = 12f;
+    public float headGravity = 8f;
+
+    [Header("Body Parts")]
     public Rigidbody2D headRB;
     public Sucker L_sucker;
     public Sucker R_sucker;
-
-    public float maxHeadForce = 100f;
-    public float tentacleForce = 50f;
-    public float range = 10f;
-    public float headPositionLenience;
-
     public Transform L_shoulder;
     public Transform R_shoulder;
 
-    public float tentacleGravity = 8f;
-    public float headGravity = 8f;
+
 
     public void Start()
     {
         _input = gameObject.GetComponent<PlayerInput>();
         L_sucker.OtherSucker = R_sucker;
         R_sucker.OtherSucker = L_sucker;
+        L_sucker.MaxStamina = maxSuckerStamina;
+        R_sucker.MaxStamina = maxSuckerStamina;
     }
 
     public void FixedUpdate()
@@ -53,7 +63,7 @@ public class PlayerController : MonoBehaviour
             // Calculate the direction and magnitude of the force to apply
             Vector2 direction = (targetPosition - headRB.position).normalized;
             float distance = Vector2.Distance(headRB.position, targetPosition);
-            Vector2 force = direction * maxHeadForce * distance * Time.fixedDeltaTime;
+            Vector2 force = direction * headForce * distance * Time.fixedDeltaTime;
 
             headRB.AddForce(force);
         }

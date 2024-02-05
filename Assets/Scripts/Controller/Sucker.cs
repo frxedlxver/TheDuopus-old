@@ -15,8 +15,22 @@ public class Sucker : MonoBehaviour
 
     public bool Sucking { get; private set; }
 
+    private float maxStamina;
+    public float staminaChargeSpeed = 2f;
+    public float MaxStamina
+    {
+        get { return maxStamina; }
+        set
+        {
+            maxStamina = value;
+            CurStamina = maxStamina;
+        }
+    }
+    public float CurStamina { get; private set; }
+
     private void Start()
     {
+
         suctionSprite = suctionPoint.GetComponent<SpriteRenderer>();
         suctionSprite.color = suctionPointColor;
         suctionPoint.SetActive(false);
@@ -25,6 +39,7 @@ public class Sucker : MonoBehaviour
     private void Update()
     {
         suctionSprite.color = suctionPointColor;
+        Debug.Log("CurStamina = " + CurStamina);
     }
     public bool TouchingSuckable
     {
@@ -43,6 +58,11 @@ public class Sucker : MonoBehaviour
         if (framesSinceStartedSucking < 3)
         {
             framesSinceStartedSucking++;
+        }
+
+        if (Sucking)
+        {
+            CurStamina = Mathf.Max(CurStamina - Time.fixedDeltaTime, 0);
         }
     }
 
@@ -80,6 +100,7 @@ public class Sucker : MonoBehaviour
         if (Sucking)
         {
             fixedSuctionJoint.connectedBody = null;
+            CurStamina = MaxStamina;
             suctionPoint.SetActive(false);
             Sucking = false;
         }

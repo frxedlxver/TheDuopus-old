@@ -51,6 +51,27 @@ TagManager:
   - name: junk
     uniqueID: 4007517071
     locked: 0
+  - name: terrainLayer0
+    uniqueID: 3072772063
+    locked: 0
+  - name: terrainLayer1
+    uniqueID: 365763663
+    locked: 0
+  - name: terrainLayer2
+    uniqueID: 2235654061
+    locked: 0
+  - name: terrainLayer3
+    uniqueID: 1840119233
+    locked: 0
+  - name: terrainLayer4
+    uniqueID: 1898098905
+    locked: 0
   - name: top
     uniqueID: 2492095441
+    locked: 0
+  - name: foreground
+    uniqueID: 4268120259
+    locked: 0
+  - name: ui
+    uniqueID: 2188123861
     locked: 0
